@@ -21,12 +21,12 @@ public class Menu {
     private int price;
 
     public Menu(String name, int price) {
-        this.name = name;
-        this.price = price;
+        this.name   = name;
+        this.price  = price;
     }
 
     public void update(String name, int price) {
-        this.name = name;
-        this.price = price;
+        this.name   = name;
+        this.price  = price;
     }
 }
