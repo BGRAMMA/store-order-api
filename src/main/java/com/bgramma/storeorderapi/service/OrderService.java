@@ -21,7 +21,7 @@ public class OrderService {
     @Transactional
     public Order inputOrder(OrderInputDto inputDto) {
         Menu menu = menuRepository.findById(inputDto.getMenuId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 메뉴 번호 입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 메뉴 번호 입니다. : " + inputDto.getMenuId()));
 
         Order order = new Order(inputDto.getTableNumber(), inputDto.getQuantity(), menu);
 
