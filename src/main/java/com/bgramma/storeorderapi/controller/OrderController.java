@@ -25,12 +25,12 @@ public class OrderController {
 
     /**
      * 주문 생성
-     * @param inputDto
+     * @param inputDtos
      * @return
      */
     @PostMapping("/api/orders")
-    public Order inputOrder(@RequestBody OrderInputDto inputDto) {
-        return orderService.inputOrder(inputDto);
+    public List<Order> inputOrder(@RequestBody List<OrderInputDto> inputDtos) {
+        return orderService.inputOrder(inputDtos);
     }
 
     /**
