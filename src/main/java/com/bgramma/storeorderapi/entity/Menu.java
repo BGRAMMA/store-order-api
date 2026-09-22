@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "menus")
 @Getter
@@ -11,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Menu {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -19,6 +22,9 @@ public class Menu {
 
     @Column(nullable = false)
     private int price;
+
+    @OneToMany(mappedBy = "menu")
+    private List<MenuOption> options = new ArrayList<>();
 
     public Menu(String name, int price) {
         this.name   = name;
