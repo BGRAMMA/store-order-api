@@ -1,5 +1,6 @@
 package com.bgramma.storeorderapi.controller;
 
+import com.bgramma.storeorderapi.dto.MenuDto;
 import com.bgramma.storeorderapi.dto.MenuInputDto;
 import com.bgramma.storeorderapi.entity.Menu;
 import com.bgramma.storeorderapi.service.MenuService;
@@ -19,7 +20,7 @@ public class MenuController {
      * @return List<Menu>
      */
     @GetMapping("/api/menus")
-    public List<Menu> getMenus() {
+    public List<MenuDto> getMenus() {
         return menuService.getAllMenus();
     }
 
@@ -29,7 +30,7 @@ public class MenuController {
      * @return
      */
     @GetMapping("/api/menus/{id}")
-    public Menu getMenu(@PathVariable Long id) {
+    public MenuDto getMenu(@PathVariable Long id) {
         return menuService.getMenu(id);
     }
 
@@ -39,7 +40,7 @@ public class MenuController {
      * @return Menu
      */
     @PostMapping("/api/menus")
-    public Menu inputMenu(@RequestBody MenuInputDto inputDto) {
+    public MenuDto inputMenu(@RequestBody MenuInputDto inputDto) {
         return menuService.inputMenu(inputDto);
     }
 
