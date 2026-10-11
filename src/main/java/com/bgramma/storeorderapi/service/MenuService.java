@@ -22,6 +22,9 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final MenuOptionRepository optionRepository;
 
+    /**
+     * 메뉴 등록
+     */
     public MenuDto inputMenu(MenuInputDto requestDto) {
         Menu menu = new Menu(requestDto.getName(), requestDto.getPrice());
         menuRepository.save(menu);
@@ -36,6 +39,9 @@ public class MenuService {
         return convertToDto(menu);
     }
 
+    /**
+     * 메뉴 전체 조회
+     */
     public List<MenuDto> getAllMenus() {
         List<Menu> menuList = menuRepository.findAll();
         List<MenuDto> dtoList = new ArrayList<>();
@@ -45,6 +51,9 @@ public class MenuService {
         return dtoList;
     }
 
+    /**
+     * 메뉴 단건 조회
+     */
     public MenuDto getMenu(Long id) {
         Menu menu = menuRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 메뉴 입니다. Menu id : " + id));
@@ -52,6 +61,9 @@ public class MenuService {
         return convertToDto(menu);
     }
 
+    /**
+     * 메뉴 업데이트
+     */
     @Transactional
     public Menu updateMenu(Long id, MenuInputDto inputDto) {
         Menu menu = findMenuEntity(id);
@@ -59,12 +71,15 @@ public class MenuService {
         return menu;
     }
 
+    /**
+     * 메뉴 삭제
+     */
     public void deleteMenu(Long id) {
         Menu menu = findMenuEntity(id);
         menuRepository.delete(menu);
     }
 
-    private Menu findMenuEntity(Long id) {
+private Menu findMenuEntity(Long id) {
         return menuRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 메뉴 입니다. Menu id : " + id));
     }

@@ -1,5 +1,6 @@
 package com.bgramma.storeorderapi.controller;
 
+import com.bgramma.storeorderapi.dto.OrderDto;
 import com.bgramma.storeorderapi.dto.OrderInputDto;
 import com.bgramma.storeorderapi.entity.Order;
 import com.bgramma.storeorderapi.service.OrderService;
@@ -16,7 +17,6 @@ public class OrderController {
 
     /**
      * 전체 주문 조회
-     * @return
      */
     @GetMapping("/api/orders")
     public List<Order> getOrders() {
@@ -25,18 +25,14 @@ public class OrderController {
 
     /**
      * 주문 생성
-     * @param inputDtos
-     * @return
      */
     @PostMapping("/api/orders")
-    public List<Order> inputOrder(@RequestBody List<OrderInputDto> inputDtos) {
+    public List<OrderDto> inputOrder(@RequestBody List<OrderInputDto> inputDtos) {
         return orderService.inputOrder(inputDtos);
     }
 
     /**
      * 테이블 별 주문 조회
-     * @param tableNumber
-     * @return
      */
     @GetMapping("/api/orders/{tableNumber}")
     public List<Order> getOrderByTable(@PathVariable int tableNumber) {

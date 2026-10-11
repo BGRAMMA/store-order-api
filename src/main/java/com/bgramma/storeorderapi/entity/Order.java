@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -18,13 +21,16 @@ public class Order {
 
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
+    private String name;
+    private int price;
 
-    public Order(int tableNumber, int quantity, Menu menu) {
+    @OneToMany(mappedBy = "order")
+    private List<OrderOption> options = new ArrayList<>();
+
+    public Order(int tableNumber, int quantity, String name, int price) {
         this.tableNumber    = tableNumber;
         this.quantity       = quantity;
-        this.menu           = menu;
+        this.name           = name;
+        this.price          = price;
     }
 }
