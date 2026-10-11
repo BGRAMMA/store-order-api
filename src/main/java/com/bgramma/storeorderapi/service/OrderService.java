@@ -5,8 +5,10 @@ import com.bgramma.storeorderapi.dto.OrderInputDto;
 import com.bgramma.storeorderapi.dto.OrderOptionDto;
 import com.bgramma.storeorderapi.dto.OrderOptionInputDto;
 import com.bgramma.storeorderapi.entity.Menu;
+import com.bgramma.storeorderapi.entity.MenuOption;
 import com.bgramma.storeorderapi.entity.Order;
 import com.bgramma.storeorderapi.entity.OrderOption;
+import com.bgramma.storeorderapi.repository.MenuOptionRepository;
 import com.bgramma.storeorderapi.repository.MenuRepository;
 import com.bgramma.storeorderapi.repository.OrderOptionRepository;
 import com.bgramma.storeorderapi.repository.OrderRepository;
@@ -23,35 +25,9 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final MenuRepository menuRepository;
-    private final OrderOptionRepository optionRepository;
+    private final OrderOptionRepository orderOptionRepository;
+    private final MenuOptionRepository menuOptionRepository;
 
-//    @Transactional
-//    public List<OrderDto> inputOrder(List<OrderInputDto> requestDtos) {
-//        List<Order> savedOrders = new ArrayList<>();
-//
-//        List<OrderDto> savedDtos = new ArrayList<>();
-//
-//        for ( OrderInputDto dto : requestDtos ) {
-//            Menu menu = menuRepository.findById(dto.getMenuId())
-//                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 메뉴입니다. : " + dto.getMenuId()));
-//
-//            Order order = new Order(dto.getTableNumber(), dto.getQuantity(), menu.getName(), menu.getPrice());
-//
-//            OrderDto orderDto = new OrderDto(dto.getMenuId(), dto.getTableNumber(), dto.getQuantity(), menu.getName(), menu.getPrice(), dto.getOptions());
-//
-//            Order savedOrder = orderRepository.save(order);
-//
-//            if ( dto.getOptions() != null ) {
-//                for ( OrderOptionInputDto optionDto : dto.getOptions() ) {
-//                    OrderOption option = new OrderOption(optionDto.getName(), optionDto.getPrice(), savedOrder);
-//                    optionRepository.save(option);
-//                }
-//            }
-//            savedOrders.add(savedOrder);
-//        }
-//
-//        return savedOrders;
-//    }
     @Transactional
     public List<OrderDto> inputOrder(List<OrderInputDto> requestOrder) {
         List<OrderDto> orderList = new ArrayList<>();
@@ -67,9 +43,12 @@ public class OrderService {
 
             if ( dto.getOptions() != null ) {
                 for ( OrderOptionInputDto optionDto : dto.getOptions() ) {
-                    OrderOption orderOption =
-                            new OrderOption(optionDto.getName(), optionDto.getPrice(), savedOrder);
-                    optionRepository.save(orderOption);
+
+                    MenuOption menuOption = menuOptionRepository.findById(optionDto.getOptionId()).orElseThrow(()
+                            -> new IllegalArgumentException("존재하지 않는 옵션 입니다. : " + optionDto.getOptionId()));
+
+                    OrderOption orderOption = new OrderOption(menuOption.getName(), menuOption.getPrice(), savedOrder);
+                    orderOptionRepository.save(orderOption);
 
                     OrderOptionDto orderOptionDto =
                             new OrderOptionDto(orderOption.getId(), orderOption.getName(), orderOption.getPrice());
