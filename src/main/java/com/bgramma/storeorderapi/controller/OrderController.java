@@ -19,7 +19,7 @@ public class OrderController {
      * 전체 주문 조회
      */
     @GetMapping("/api/orders")
-    public List<Order> getOrders() {
+    public List<OrderDto> getOrders() {
         return orderService.getAllOrders();
     }
 
