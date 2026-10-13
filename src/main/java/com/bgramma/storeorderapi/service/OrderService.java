@@ -30,7 +30,7 @@ public class OrderService {
 
     @Transactional
     public List<OrderDto> inputOrder(List<OrderInputDto> requestOrder) {
-        List<OrderDto> orderList = new ArrayList<>();
+        List<OrderDto> dtoList = new ArrayList<>();
 
         for ( OrderInputDto dto : requestOrder ) {
             Menu menu = menuRepository.findById(dto.getMenuId()).orElseThrow(()
@@ -61,16 +61,33 @@ public class OrderService {
             OrderDto orderDto
                     = new OrderDto(order.getId(), order.getTableNumber(), order.getQuantity(), order.getName(), order.getPrice(), orderOptionDtoList);
 
-            orderList.add(orderDto);
+            dtoList.add(orderDto);
         }
 
-        return orderList;
+        return dtoList;
 
     }
 
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderDto> getAllOrders() {
+        List<Order> orderList = orderRepository.findAll();
+
+        return orderList.stream().map( order -> {
+            List<OrderOptionDto> optionDtoList = order.getOptions().stream()
+                    .map( option ->
+                            new OrderOptionDto(
+                                    option.getId(),
+                                    option.getName(),
+                                    option.getPrice())).toList();
+
+            return new OrderDto(
+                    order.getId(),
+                    order.getTableNumber(),
+                    order.getQuantity(),
+                    order.getName(),
+                    order.getPrice(),
+                    optionDtoList);
+        }).toList();
     }
 
     public List<Order> getOrderByTableNumber(int tableNumber) {
